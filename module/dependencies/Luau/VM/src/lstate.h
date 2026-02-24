@@ -187,7 +187,42 @@ typedef struct global_State
     TString* tmname[TM_N]; // 0x3D8
     TValue pseudotemp; // 0x480
     TValue registry; // 0x490
-    int registryfree; // 0x4A0
+    // Roblox monitors the upper 4 bits of registryfree as forbidden bits.
+    // Writing to it as a plain int can accidentally corrupt those bits and trigger a detection.
+    // This struct masks reads/writes to only the lower 28 bits while preserving the upper nibble.
+    struct registryfree_value
+    {
+    private:
+        int _value;
+
+    public:
+        void operator=(const registryfree_value& value)
+        {
+            this->operator=(value._value);
+        }
+
+        void operator=(const int& value)
+        {
+            _value = (_value & 0xF0000000) | (value & 0xFFFFFFF);
+        }
+
+        operator const int() const
+        {
+            return _value & 0xFFFFFFF;
+        }
+
+        bool operator==(const int& value) const
+        {
+            return (_value & 0xFFFFFFF) == value;
+        }
+
+        bool operator!=(const int& value) const
+        {
+            return (_value & 0xFFFFFFF) != value;
+        }
+    };
+
+    registryfree_value registryfree; // 0x4A0 - next free slot in registry
     struct lua_jmpbuf* errorjmp; // 0x4A8
     uint64_t rngstate; // 0x4B0
     uint64_t ptrenckey[4]; // 0x4B8
