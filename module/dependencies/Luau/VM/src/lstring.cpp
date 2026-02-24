@@ -76,6 +76,9 @@ static TString* newlstr(lua_State* L, const char* str, size_t l, unsigned int h)
     TString* ts = luaM_newgco(L, TString, sizestring(l), L->activememcat);
     luaC_init(L, ts, LUA_TSTRING);
     ts->atom = ATOM_UNDEF;
+    // Roblox sets the 16-bit padding field at offset 0x6 to -1 (0xFFFF) for all valid TStrings.
+    // The GC checks this during luaS_free; omitting it triggers a detection flag.
+    *(uint16_t*)((uint8_t*)ts + 0x6) = 0xFFFF;
     ts->hash = h;
     ts->len = unsigned(l);
 
@@ -102,6 +105,8 @@ TString* luaS_bufstart(lua_State* L, size_t size)
     TString* ts = luaM_newgco(L, TString, sizestring(size), L->activememcat);
     luaC_init(L, ts, LUA_TSTRING);
     ts->atom = ATOM_UNDEF;
+    // Roblox GC detection: padding field at offset 0x6 must be -1
+    *(uint16_t*)((uint8_t*)ts + 0x6) = 0xFFFF;
     ts->hash = 0; // computed in luaS_buffinish
     ts->len = unsigned(size);
 
@@ -134,6 +139,8 @@ TString* luaS_buffinish(lua_State* L, TString* ts)
     ts->hash = h;
     ts->data[ts->len] = '\0'; // ending 0
     ts->atom = ATOM_UNDEF;
+    // Roblox GC detection: padding field at offset 0x6 must be -1
+    *(uint16_t*)((uint8_t*)ts + 0x6) = 0xFFFF;
     ts->next = tb->hash[bucket]; // chain new entry
     tb->hash[bucket] = ts;
 
