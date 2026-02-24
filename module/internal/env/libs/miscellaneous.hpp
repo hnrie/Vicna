@@ -1438,5 +1438,7 @@ namespace Miscellaneous
 
         Utils::AddFunction(L, "lz4compress", lz4compress);
         Utils::AddFunction(L, "lz4decompress", lz4decompress);
+
+        Utils::AddFunction(L, "gethui", gethui);
     }
 }
