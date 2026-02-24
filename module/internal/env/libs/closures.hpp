@@ -233,23 +233,29 @@ namespace Closures
         Closure* target = clvalue(index2addr(L, 1));
         Closure* hook = clvalue(index2addr(L, 2));
 
-        if (!target || !hook) {
-            luaL_error(L, "Invalid closures");
+        if (!target || !hook)
+        {
+            luaL_error(L, "hookfunction: invalid closures");
             return 0;
         }
 
-        Closure* backup = nullptr;
-        auto it = OriginalFunctions.find(target);
-        if (it != OriginalFunctions.end()) {
-            backup = it->second;
-        }
-        else {
-            luaC_threadbarrier(L);
+        luaC_threadbarrier(L);
 
-            if (target->isC) {
+        Closure* backup = nullptr;
+        auto existingbackup = OriginalFunctions.find(target);
+
+        if (existingbackup != OriginalFunctions.end())
+        {
+            backup = existingbackup->second;
+        }
+        else
+        {
+            if (target->isC)
+            {
                 backup = luaF_newCclosure(L, target->nupvalues, target->env);
-                if (!backup) {
-                    luaL_error(L, "Failed to clone original function");
+                if (!backup)
+                {
+                    luaL_error(L, "hookfunction: failed to back up target");
                     return 0;
                 }
 
@@ -257,30 +263,35 @@ namespace Closures
                 backup->c.cont = target->c.cont;
                 backup->c.debugname = target->c.debugname;
 
-                for (int i = 0; i < target->nupvalues; i++) {
+                for (int i = 0; i < target->nupvalues; i++)
                     setobj2n(L, &backup->c.upvals[i], &target->c.upvals[i]);
-                }
             }
-            else {
-                if (!target->l.p) {
-                    luaL_error(L, "Invalid Lua closure");
+            else
+            {
+                if (!target->l.p)
+                {
+                    luaL_error(L, "hookfunction: target has no proto");
                     return 0;
                 }
 
                 backup = luaF_newLclosure(L, target->nupvalues, target->env, target->l.p);
-                if (!backup) {
-                    luaL_error(L, "Failed to clone original function");
+                if (!backup)
+                {
+                    luaL_error(L, "hookfunction: failed to back up target");
                     return 0;
                 }
 
-                for (int i = 0; i < target->nupvalues; i++) {
+                backup->isC = 0;
+                backup->nupvalues = target->nupvalues;
+
+                for (int i = 0; i < target->nupvalues; i++)
                     backup->l.uprefs[i] = target->l.uprefs[i];
-                }
             }
 
-            auto ncIt = NewCClosureMap.find(target);
-            if (ncIt != NewCClosureMap.end()) {
-                NewCClosureMap[backup] = ncIt->second;
+            auto ncit = NewCClosureMap.find(target);
+            if (ncit != NewCClosureMap.end())
+            {
+                NewCClosureMap[backup] = ncit->second;
                 WrappedClosures.insert(backup);
             }
 
@@ -289,108 +300,116 @@ namespace Closures
 
         HookedFunctions[target] = hook;
 
-        bool targetIsC = target->isC;
-        bool hookIsC = hook->isC;
+        bool targetisc = target->isC;
+        bool hookisc = hook->isC;
+        bool hookinc = NewCClosureMap.find(hook) != NewCClosureMap.end();
 
-        bool targetIsNC = NewCClosureMap.find(target) != NewCClosureMap.end();
-        bool hookIsNC = NewCClosureMap.find(hook) != NewCClosureMap.end();
-
-        if (targetIsC && hookIsC) {
-            if (hook->nupvalues > target->nupvalues) {
-                luaL_error(L, "hook has more upvalues than target");
+        if (targetisc && hookisc)
+        {
+            if (hook->nupvalues > target->nupvalues)
+            {
+                luaL_error(L, "hookfunction: hook has more upvalues than target");
                 return 0;
             }
 
             target->c.f = hook->c.f;
             target->c.cont = hook->c.cont;
+            target->c.debugname = hook->c.debugname;
 
-            int minUpvals = (hook->nupvalues < target->nupvalues) ? hook->nupvalues : target->nupvalues;
-            for (int i = 0; i < minUpvals; i++) {
+            for (int i = 0; i < hook->nupvalues; i++)
                 setobj2n(L, &target->c.upvals[i], &hook->c.upvals[i]);
-            }
 
-            if (hookIsNC) {
-                auto hookOriginal = NewCClosureMap[hook];
-                NewCClosureMap[target] = hookOriginal;
+            if (hookinc)
+            {
+                NewCClosureMap[target] = NewCClosureMap[hook];
                 WrappedClosures.insert(target);
             }
         }
-        else if (!targetIsC && !hookIsC) {
-            if (hook->nupvalues > target->nupvalues) {
-                luaL_error(L, "hook has more upvalues than target");
+        else if (!targetisc && !hookisc)
+        {
+            if (!hook->l.p)
+            {
+                luaL_error(L, "hookfunction: hook has no proto");
                 return 0;
             }
 
-            if (!hook->l.p) {
-                luaL_error(L, "Invalid hook proto");
+            if (hook->nupvalues > target->nupvalues)
+            {
+                luaL_error(L, "hookfunction: hook has more upvalues than target");
                 return 0;
             }
 
             target->l.p = hook->l.p;
 
-            for (int i = 0; i < target->nupvalues; i++) {
+            for (int i = 0; i < target->nupvalues; i++)
                 setobj2n(L, &target->l.uprefs[i], luaO_nilobject);
-            }
 
-            int minUpvals = (hook->nupvalues < target->nupvalues) ? hook->nupvalues : target->nupvalues;
-            for (int i = 0; i < minUpvals; i++) {
+            for (int i = 0; i < hook->nupvalues; i++)
                 setobj2n(L, &target->l.uprefs[i], &hook->l.uprefs[i]);
-            }
+
+            target->nupvalues = hook->nupvalues;
         }
-        else if (targetIsC && !hookIsC) {
+        else if (targetisc && !hookisc)
+        {
             lua_pushvalue(L, 2);
-            int result = newcclosure(L);
-            if (result != 1) {
-                luaL_error(L, "Failed to wrap Lua hook");
+            int wrapresult = newcclosure(L);
+            if (wrapresult != 1)
+            {
+                luaL_error(L, "hookfunction: failed to wrap lua hook as cclosure");
                 return 0;
             }
 
-            Closure* wrappedHook = clvalue(index2addr(L, -1));
+            Closure* wrapedhook = clvalue(index2addr(L, -1));
             lua_pop(L, 1);
 
-            if (!wrappedHook) {
-                luaL_error(L, "Failed to wrap Lua hook");
+            if (!wrapedhook)
+            {
+                luaL_error(L, "hookfunction: wrapped hook is null");
                 return 0;
             }
 
-            target->c.f = wrappedHook->c.f;
-            target->c.cont = wrappedHook->c.cont;
+            target->c.f = wrapedhook->c.f;
+            target->c.cont = wrapedhook->c.cont;
+            target->c.debugname = wrapedhook->c.debugname;
 
-            int minUpvals = (wrappedHook->nupvalues < target->nupvalues) ? wrappedHook->nupvalues : target->nupvalues;
-            for (int i = 0; i < minUpvals; i++) {
-                setobj2n(L, &target->c.upvals[i], &wrappedHook->c.upvals[i]);
-            }
+            for (int i = 0; i < wrapedhook->nupvalues && i < target->nupvalues; i++)
+                setobj2n(L, &target->c.upvals[i], &wrapedhook->c.upvals[i]);
 
-            HookedFunctions[target] = wrappedHook;
+            NewCClosureMap[target] = hook;
+            WrappedClosures.insert(target);
+            HookedFunctions[target] = wrapedhook;
         }
-        else if (!targetIsC && hookIsC) {
-            lua_pushvalue(L, 2);
-            int result = newlclosure(L);
-            if (result != 1) {
-                luaL_error(L, "Failed to wrap C hook");
-                return 0;
+        else
+        {
+            // target is lua (script closure), hook is c or newcclosure
+            // newlclosure wrapping is broken here: the wrapper always introduces at least
+            // one upvalue (its env table) which makes hook->nupvalues > target->nupvalues
+            // whenever the script function has 0 upvalues — extremely common
+            // fix: flip isC in-place and copy the c fields directly, no wrapping needed
+            // c.upvals sit 0x10 bytes past l.uprefs in the union so the L closure
+            // allocation only covers c.upvals[i] safely when i < target->nupvalues - 1
+            // we therefore cap at that safe limit for upvalue copying
+
+            target->isC = 1;
+            target->c.f = hook->c.f;
+            target->c.cont = hook->c.cont;
+            target->c.debugname = hook->c.debugname;
+
+            int safeslots = (target->nupvalues > 0) ? (target->nupvalues - 1) : 0;
+            int copycount = hook->nupvalues < safeslots ? hook->nupvalues : safeslots;
+
+            for (int i = 0; i < copycount; i++)
+                setobj2n(L, &target->c.upvals[i], &hook->c.upvals[i]);
+
+            target->nupvalues = copycount;
+
+            if (hookinc)
+            {
+                NewCClosureMap[target] = NewCClosureMap[hook];
+                WrappedClosures.insert(target);
             }
 
-            Closure* wrappedHook = clvalue(index2addr(L, -1));
-            lua_pop(L, 1);
-
-            if (!wrappedHook || wrappedHook->isC || !wrappedHook->l.p) {
-                luaL_error(L, "Failed to wrap C hook");
-                return 0;
-            }
-
-            target->l.p = wrappedHook->l.p;
-
-            for (int i = 0; i < target->nupvalues; i++) {
-                setobj2n(L, &target->l.uprefs[i], luaO_nilobject);
-            }
-
-            int minUpvals = (wrappedHook->nupvalues < target->nupvalues) ? wrappedHook->nupvalues : target->nupvalues;
-            for (int i = 0; i < minUpvals; i++) {
-                setobj2n(L, &target->l.uprefs[i], &wrappedHook->l.uprefs[i]);
-            }
-
-            HookedFunctions[target] = wrappedHook;
+            HookedFunctions[target] = hook;
         }
 
         luaC_threadbarrier(L);
