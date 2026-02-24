@@ -666,9 +666,16 @@ namespace Miscellaneous
             metatableRef = getOptionalTableFieldRef3(L, optionsTable, "Metatable", "metatable", "METATABLE");
         }
 
-        lua_pushboolean(L, isTable);
-        getgc(L);
+        lua_newtable(L);
         int gcTableIdx = lua_gettop(L);
+        {
+            getgc_context gcctx{ L, isTable, 0, gcTableIdx };
+            lua_gc(L, LUA_GCCOLLECT, 0);
+            luaC_threadbarrier(L);
+            lua_gc(L, LUA_GCSTOP, 0);
+            luaM_visitgco(L, &gcctx, getgc_visit);
+            lua_gc(L, LUA_GCRESTART, 0);
+        }
 
         lua_newtable(L);
         int resultIdx = lua_gettop(L);
@@ -683,20 +690,8 @@ namespace Miscellaneous
                 Closure* cl = clvalue(luaA_toobject(L, objIdx));
 
                 if (ignoreExecutor && matches) {
-                    lua_getglobal(L, "isexecutorclosure");
-                    if (lua_isfunction(L, -1)) {
-                        lua_pushvalue(L, objIdx);
-                        if (lua_pcall(L, 1, 1, 0) == LUA_OK) {
-                            if (lua_toboolean(L, -1)) matches = false;
-                            lua_pop(L, 1);
-                        }
-                        else {
-                            lua_pop(L, 1);
-                        }
-                    }
-                    else {
-                        lua_pop(L, 1);
-                    }
+                    if (Closures::isexecutorclosure_check(L, cl))
+                        matches = false;
                 }
 
                 if (filterName && matches) {

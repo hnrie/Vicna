@@ -538,30 +538,48 @@ namespace Closures
         return 1;
     }
 
+    static inline bool isexecutorclosure_check(lua_State* L, Closure* closure)
+    {
+        if (!closure->isC)
+        {
+            if (!closure->l.p || !closure->l.p->source)
+                return false;
+
+            const char* src = getstr(closure->l.p->source);
+            if (!src)
+                return false;
+
+            if (strcmp(src, "=loadstring") == 0)
+                return true;
+            if (strstr(src, "@Vicna") != nullptr)
+                return true;
+            if (strstr(src, "@Leafy") != nullptr)
+                return true;
+
+            if (SharedVariables::ExploitThread
+                && closure->env == SharedVariables::ExploitThread->gt)
+                return true;
+
+            return false;
+        }
+
+        for (auto func : Environment::function_array)
+        {
+            if (func == closure)
+                return true;
+            if (func->isC && func->c.f == closure->c.f)
+                return true;
+        }
+
+        return false;
+    }
+
     auto is_executor_closure(lua_State* rl) -> int
     {
         if (lua_type(rl, 1) != LUA_TFUNCTION) { lua_pushboolean(rl, false); return 1; }
 
         Closure* closure = clvalue(index2addr(rl, 1));
-        bool value = false;
-
-        if (lua_isLfunction(rl, 1))
-        {
-            value = closure->l.p->linedefined;
-        }
-        else
-        {
-            for (int i = 0; i < Environment::function_array.size(); i++)
-            {
-                if (Environment::function_array[i]->c.f == closure->c.f)
-                {
-                    value = true;
-                    break;
-                }
-            }
-        }
-
-        lua_pushboolean(rl, value);
+        lua_pushboolean(rl, isexecutorclosure_check(rl, closure));
         return 1;
     }
 
