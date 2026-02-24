@@ -435,22 +435,44 @@ int allcons(lua_State* ls)
     if (lua_pcall(ls, 1, 0, 0) != 0)
         luaL_error(ls, "Error calling Disconnect on stub: %s", lua_tostring(ls, -1));
 
-    if (!waitvft && !oncevft && !connectparalellvft) {
+    if (!oncevft) {
         lua_getfield(ls, 1, "Once");
-        {
+        if (lua_isfunction(ls, -1)) {
             lua_pushvalue(ls, 1);
             lua_pushcfunction(ls, stub, nullptr);
+            if (lua_pcall(ls, 2, 1, 0) == LUA_OK) {
+                auto sc = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
+                if (sc && sc->islot && sc->islot->storage)
+                    oncevft = sc->islot->storage->vftable;
+                lua_getfield(ls, -1, "Disconnect");
+                lua_insert(ls, -2);
+                lua_pcall(ls, 1, 0, 0);
+            } else {
+                lua_pop(ls, 1);
+            }
+        } else {
+            lua_pop(ls, 1);
         }
-        lua_call(ls, 2, 1);
-        auto sigconbr_once = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
-        if (!sigconbr_once)
-            luaL_error(ls, "Failed to retrieve Once stub");
-        oncevft = sigconbr_once->islot->storage->vftable;
-        lua_getfield(ls, -1, "Disconnect");
-        {
-            lua_insert(ls, -2);
+    }
+
+    if (!connectparalellvft) {
+        lua_getfield(ls, 1, "ConnectParallel");
+        if (lua_isfunction(ls, -1)) {
+            lua_pushvalue(ls, 1);
+            lua_pushcfunction(ls, stub, nullptr);
+            if (lua_pcall(ls, 2, 1, 0) == LUA_OK) {
+                auto sc = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
+                if (sc && sc->islot && sc->islot->storage)
+                    connectparalellvft = sc->islot->storage->vftable;
+                lua_getfield(ls, -1, "Disconnect");
+                lua_insert(ls, -2);
+                lua_pcall(ls, 1, 0, 0);
+            } else {
+                lua_pop(ls, 1);
+            }
+        } else {
+            lua_pop(ls, 1);
         }
-        lua_call(ls, 1, 0);
     }
 
     int idx = 1;
@@ -697,22 +719,44 @@ namespace Interactions
         if (lua_pcall(ls, 1, 0, 0) != 0)
             luaL_error(ls, "Error calling Disconnect on stub: %s", lua_tostring(ls, -1));
 
-        if (!waitvft && !oncevft && !connectparalellvft) {
+        if (!oncevft) {
             lua_getfield(ls, 1, "Once");
-            {
+            if (lua_isfunction(ls, -1)) {
                 lua_pushvalue(ls, 1);
                 lua_pushcfunction(ls, stub, nullptr);
+                if (lua_pcall(ls, 2, 1, 0) == LUA_OK) {
+                    auto sc = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
+                    if (sc && sc->islot && sc->islot->storage)
+                        oncevft = sc->islot->storage->vftable;
+                    lua_getfield(ls, -1, "Disconnect");
+                    lua_insert(ls, -2);
+                    lua_pcall(ls, 1, 0, 0);
+                } else {
+                    lua_pop(ls, 1);
+                }
+            } else {
+                lua_pop(ls, 1);
             }
-            lua_call(ls, 2, 1);
-            auto sigconbr_once = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
-            if (!sigconbr_once)
-                luaL_error(ls, "Failed to retrieve Once stub");
-            oncevft = sigconbr_once->islot->storage->vftable;
-            lua_getfield(ls, -1, "Disconnect");
-            {
-                lua_insert(ls, -2);
+        }
+
+        if (!connectparalellvft) {
+            lua_getfield(ls, 1, "ConnectParallel");
+            if (lua_isfunction(ls, -1)) {
+                lua_pushvalue(ls, 1);
+                lua_pushcfunction(ls, stub, nullptr);
+                if (lua_pcall(ls, 2, 1, 0) == LUA_OK) {
+                    auto sc = reinterpret_cast<SignalConnectionBridge*>(lua_touserdata(ls, -1));
+                    if (sc && sc->islot && sc->islot->storage)
+                        connectparalellvft = sc->islot->storage->vftable;
+                    lua_getfield(ls, -1, "Disconnect");
+                    lua_insert(ls, -2);
+                    lua_pcall(ls, 1, 0, 0);
+                } else {
+                    lua_pop(ls, 1);
+                }
+            } else {
+                lua_pop(ls, 1);
             }
-            lua_call(ls, 1, 0);
         }
 
         int idx = 1;
