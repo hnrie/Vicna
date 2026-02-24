@@ -576,6 +576,13 @@ namespace Interactions
         lua_call(L, 2, 1);
     }
 
+    void checkIsA(lua_State* L, int idx, const char* idk) {
+        lua_getfield(L, idx, "IsA");
+        lua_pushvalue(L, idx);
+        lua_pushstring(L, idk);
+        lua_call(L, 2, 1);
+    }
+
     int firetouchinterest(lua_State* L)
     {
         luaL_checktype(L, 1, LUA_TUSERDATA);
@@ -588,11 +595,11 @@ namespace Interactions
         if (std::string(luaL_typename(L, 2)) != "Instance")
             luaL_typeerror(L, 2, "Instance");
 
-        checkIsA(L, "BasePart");
+        checkIsA(L, 1, "BasePart");
         const bool bp_1 = lua_toboolean(L, -1);
         lua_pop(L, 1);
 
-        checkIsA(L, "BasePart");
+        checkIsA(L, 2, "BasePart");
         const bool bp_2 = lua_toboolean(L, -1);
         lua_pop(L, 1);
 
@@ -608,12 +615,13 @@ namespace Interactions
         const uintptr_t Overlap1 = *reinterpret_cast<uintptr_t*>(Primitive1 + Offsets::Instance::Overlap);
         const uintptr_t Overlap2 = *reinterpret_cast<uintptr_t*>(Primitive2 + Offsets::Instance::Overlap);
 
-        if (Overlap1 != Overlap2 || !Primitive1 || !Primitive2)
+        if (!Primitive1 || !Primitive2 || !Overlap1 || !Overlap2)
             luaL_error(L, ("lmk if this happens it shouldnt."));
 
-        const int Fire = lua_isboolean(L, 3) ? lua_toboolean(L, 3) : lua_tointeger(L, 3);
+        const int toggle = lua_isboolean(L, 3) ? (lua_toboolean(L, 3) ? 0 : 1) : lua_tointeger(L, 3);
+        const bool fire = toggle == 0;
 
-        Roblox::FireTouchInterest(Overlap2, Primitive1, Primitive2, Fire, 1);
+        Roblox::FireTouchInterest(Overlap2, Primitive1, Primitive2, fire, 1);
         return 0;
     }
 
@@ -878,7 +886,7 @@ namespace Interactions
 
         Utils::AddFunction(L, "fireproximityprompt", fireproximityprompt);
         Utils::AddFunction(L, "fireclickdetector", fireclickdetector);
-        //Utils::AddFunction(L, "firetouchinterest", firetouchinterest);
+        Utils::AddFunction(L, "firetouchinterest", firetouchinterest);
 
         Utils::AddFunction(L, "getconnections", getconnections);
 
