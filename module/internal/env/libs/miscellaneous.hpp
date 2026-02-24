@@ -73,7 +73,7 @@ namespace Miscellaneous
     int identifyexecutor(lua_State* L)
     {
         lua_pushstring(L, "Vicna");
-        lua_pushstring(L, "3.0.0");
+        lua_pushstring(L, "3.0.1");
         return 2;
     }
 
