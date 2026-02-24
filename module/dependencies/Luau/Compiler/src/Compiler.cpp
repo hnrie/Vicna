@@ -1308,7 +1308,9 @@ struct Compiler
 
         for (const Capture& c : captures)
         {
-            bytecode.emitABC(LOP_CAPTURE, uint8_t(c.type), c.data, 0);
+            // Roblox sets the otherwise-unused C operand to 0xFF specifically for LCT_REF captures.
+            // The luau_execute check reads this operand and flags unmodified (0) values as invalid.
+            bytecode.emitABC(LOP_CAPTURE, uint8_t(c.type), c.data, c.type == LCT_REF ? 0xFF : 0);
         }
     }
 
