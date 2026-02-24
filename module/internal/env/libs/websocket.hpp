@@ -73,11 +73,12 @@ namespace Websocket {
                         lua_rawgeti(l, -1, i);
                         size_t msgLen = 0;
                         const char* msg = lua_tolstring(l, -1, &msgLen);
+                        std::string payload(msg ? msg : "", msgLen);
                         lua_pop(l, 1);
                         if (!msg) continue;
 
                         lua_pushvalue(l, 2);
-                        lua_pushlstring(l, msg, msgLen);
+                        lua_pushlstring(l, payload.c_str(), payload.size());
                         if (lua_pcall(l, 1, 0, 0) != LUA_OK) {
                             lua_pop(l, 1);
                         }
