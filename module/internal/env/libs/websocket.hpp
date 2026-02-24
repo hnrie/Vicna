@@ -112,28 +112,56 @@ namespace Websocket {
         return true;
     }
 
-    static bool get_message_payload(lua_State* l, int idx, const char** outData, size_t* outLen)
+    // Extract message content into a std::string (safe copy, no GC hazard).
+    static std::string get_message_payload(lua_State* l)
     {
-        if (lua_isstring(l, idx))
+        // Try arg 1 as plain string
+        if (lua_isstring(l, 1))
         {
-            *outData = lua_tolstring(l, idx, outLen);
-            return *outData != nullptr;
+            size_t len = 0;
+            const char* s = lua_tolstring(l, 1, &len);
+            if (s) return std::string(s, len);
         }
 
-        if (lua_istable(l, idx) || lua_isuserdata(l, idx))
+        // Try arg 1 as table/userdata with a .Data field
+        if (lua_istable(l, 1) || lua_isuserdata(l, 1))
         {
-            int top = lua_gettop(l);
-            lua_getfield(l, idx, "Data");
+            lua_getfield(l, 1, "Data");
             if (lua_isstring(l, -1))
             {
-                *outData = lua_tolstring(l, -1, outLen);
-                lua_settop(l, top);
-                return *outData != nullptr;
+                size_t len = 0;
+                const char* s = lua_tolstring(l, -1, &len);
+                std::string result(s ? s : "", len);
+                lua_pop(l, 1);
+                return result;
             }
-            lua_settop(l, top);
+            lua_pop(l, 1);
         }
 
-        return false;
+        // Try arg 2 as plain string (signal fires as (self, message))
+        if (lua_isstring(l, 2))
+        {
+            size_t len = 0;
+            const char* s = lua_tolstring(l, 2, &len);
+            if (s) return std::string(s, len);
+        }
+
+        // Try arg 2 as table/userdata with .Data
+        if (lua_istable(l, 2) || lua_isuserdata(l, 2))
+        {
+            lua_getfield(l, 2, "Data");
+            if (lua_isstring(l, -1))
+            {
+                size_t len = 0;
+                const char* s = lua_tolstring(l, -1, &len);
+                std::string result(s ? s : "", len);
+                lua_pop(l, 1);
+                return result;
+            }
+            lua_pop(l, 1);
+        }
+
+        return {};
     }
 
     inline int connect(lua_State* l) {
@@ -212,31 +240,32 @@ namespace Websocket {
             lua_pushvalue(l, conn_index);
             lua_pushcclosure(l, [](lua_State* l) -> int {
                 int top = lua_gettop(l);
-                size_t data_len = 0;
-                const char* data = nullptr;
-                if (!get_message_payload(l, 1, &data, &data_len))
-                    get_message_payload(l, 2, &data, &data_len);
-                if (!data) { data = ""; data_len = 0; }
+                // Copy message content into std::string FIRST, before any further
+                // lua_getfield calls that could trigger GC and invalidate raw pointers.
+                std::string msg = get_message_payload(l);
+                lua_settop(l, top); // restore original arg frame (safe: msg is already copied)
+
                 lua_pushvalue(l, lua_upvalueindex(1));
                 lua_getfield(l, -1, "OnMessage");
                 lua_getfield(l, -1, "_handlers");
                 if (lua_istable(l, -1)) {
                     int len = lua_objlen(l, -1);
                     if (len <= 0) {
+                        // No handlers yet — buffer for when user calls OnMessage:Connect()
                         lua_pushvalue(l, lua_upvalueindex(1));
                         lua_getfield(l, -1, "_pending_messages");
                         if (lua_istable(l, -1)) {
                             int pendingLen = lua_objlen(l, -1);
-                            lua_pushlstring(l, data, data_len);
+                            lua_pushlstring(l, msg.c_str(), msg.size());
                             lua_rawseti(l, -2, pendingLen + 1);
                         }
-                        lua_pop(l, 2);
+                        lua_pop(l, 2); // pop _pending_messages, conn
                     }
                     else {
                         for (int i = 1; i <= len; i++) {
                             lua_rawgeti(l, -1, i);
                             if (lua_isfunction(l, -1)) {
-                                lua_pushlstring(l, data, data_len);
+                                lua_pushlstring(l, msg.c_str(), msg.size());
                                 if (lua_pcall(l, 1, 0, 0) != LUA_OK) {
                                     lua_pop(l, 1);
                                 }
