@@ -30,26 +30,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -114,10 +114,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;YUBXMODULE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Luau\Compiler\include;$(ProjectDir)Dependencies\Luau\Common\include;$(ProjectDir)Dependencies\Luau\Ast\include;$(ProjectDir)Dependencies\Luau\VM\include;$(ProjectDir)Dependencies\Luau\VM\src;$(ProjectDir)Dependencies\Luau;$(ProjectDir)Roblox;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\Luau\Compiler\include;$(ProjectDir)Dependencies\Luau\Common\include;$(ProjectDir)Dependencies\Luau\Ast\include;$(ProjectDir)Dependencies\Luau\VM\include;$(ProjectDir)Dependencies\Luau\VM\src;$(ProjectDir)Dependencies\Luau;$(ProjectDir);$(ProjectDir)Dependencies\cpr\include;$(ProjectDir)Dependencies\curl\include;$(ProjectDir)Dependencies;$(ProjectDir)Dependencies\zstd\include;$(ProjectDir)Dependencies\blake3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,9 +152,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="dependencies\blake3\blake3.c" />
-    <ClCompile Include="dependencies\blake3\blake3_dispatch.c" />
-    <ClCompile Include="dependencies\blake3\blake3_portable.c" />
+    <ClCompile Include="dependencies\blake3\blake3.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="dependencies\blake3\blake3_dispatch.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="dependencies\blake3\blake3_portable.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="dependencies\CryptLibrary\base64.cpp" />
     <ClCompile Include="dependencies\Luau\Ast\src\Allocator.cpp" />
     <ClCompile Include="dependencies\Luau\Ast\src\Ast.cpp" />
@@ -209,7 +215,9 @@
     <ClCompile Include="dependencies\Luau\VM\src\lvmexecute.cpp" />
     <ClCompile Include="dependencies\Luau\VM\src\lvmload.cpp" />
     <ClCompile Include="dependencies\Luau\VM\src\lvmutils.cpp" />
-    <ClCompile Include="dependencies\lz4\lz4.c" />
+    <ClCompile Include="dependencies\lz4\lz4.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="internal\env\helpers\bytecode\bytecode.cpp" />
     <ClCompile Include="internal\env\libs\cache.hpp" />
     <ClCompile Include="internal\env\libs\debug.hpp" />

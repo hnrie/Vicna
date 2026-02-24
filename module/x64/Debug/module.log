@@ -1,0 +1,223 @@
+﻿  base64.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\CryptLibrary\base64.cpp(285,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Allocator.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Allocator.cpp(67,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Ast.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Ast.cpp(1414,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Confusables.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Confusables.cpp(1825,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Cst.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Cst.cpp(313,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Lexer.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Lexer.cpp(1332,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Location.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Location.cpp(56,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Parser.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\Parser.cpp(4542,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  PrettyPrinter.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Ast\src\PrettyPrinter.cpp(2010,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  StringUtils.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Common\src\StringUtils.cpp(316,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  TimeTrace.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Common\src\TimeTrace.cpp(279,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  BuiltinFolding.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\BuiltinFolding.cpp(644,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Builtins.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\Builtins.cpp(609,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  BytecodeBuilder.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\BytecodeBuilder.cpp(2675,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Compiler.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\Compiler.cpp(4765,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ConstantFolding.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\ConstantFolding.cpp(800,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  CostModel.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\CostModel.cpp(506,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lcode.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\lcode.cpp(55,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  TableShape.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\TableShape.cpp(159,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Types.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\Types.cpp(815,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
+  Compiling...
+  ValueTracking.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\Compiler\src\ValueTracking.cpp(112,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lapi.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lapi.cpp(1661,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  laux.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\laux.cpp(663,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lbaselib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lbaselib.cpp(517,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lbitlib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lbitlib.cpp(247,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lbuffer.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lbuffer.cpp(25,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lbuflib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lbuflib.cpp(367,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lbuiltins.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lbuiltins.cpp(1999,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lcorolib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lcorolib.cpp(270,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ldblib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldblib.cpp(193,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ldebug.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldebug.cpp(616,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ldo.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldo.cpp(44,9): warning C4005: 'LUAU_SETJMP': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldo.cpp(41,9):
+      see previous definition of 'LUAU_SETJMP'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldo.cpp(45,9): warning C4005: 'LUAU_LONGJMP': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldo.cpp(42,9):
+      see previous definition of 'LUAU_LONGJMP'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ldo.cpp(795,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lfunc.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lfunc.cpp(212,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lgc.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lgc.cpp(1314,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lgcdebug.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lgcdebug.cpp(918,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  linit.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\linit.cpp(96,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lmathlib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmathlib.cpp(517,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lmem.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(94,9): warning C4005: 'ASAN_POISON_MEMORY_REGION': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(91,9):
+      see previous definition of 'ASAN_POISON_MEMORY_REGION'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(95,9): warning C4005: 'ASAN_UNPOISON_MEMORY_REGION': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(92,9):
+      see previous definition of 'ASAN_UNPOISON_MEMORY_REGION'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(106,9): warning C4005: 'ABISWITCH': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(104,9):
+      see previous definition of 'ABISWITCH'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(108,9): warning C4005: 'ABISWITCH': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(106,9):
+      see previous definition of 'ABISWITCH'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(111,9): warning C4005: 'ABISWITCH': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(108,9):
+      see previous definition of 'ABISWITCH'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(206,9): warning C4005: 'debugpageset': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(204,9):
+      see previous definition of 'debugpageset'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lmem.cpp(711,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lnumprint.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lnumprint.cpp(370,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lobject.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lobject.cpp(164,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
+  Compiling...
+  loslib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\loslib.cpp(226,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lperf.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lperf.cpp(70,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lstate.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lstate.cpp(253,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lstring.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lstring.cpp(201,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lstrlib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lstrlib.cpp(1681,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ltable.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ltable.cpp(891,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ltablib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ltablib.cpp(628,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ltm.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ltm.cpp(160,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ludata.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\ludata.cpp(44,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lutf8lib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lutf8lib.cpp(297,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lveclib.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lveclib.cpp(361,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lvmexecute.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(110,9): warning C4005: 'VM_USE_CGOTO': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(108,9):
+      see previous definition of 'VM_USE_CGOTO'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(126,9): warning C4005: 'VM_CASE': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(122,9):
+      see previous definition of 'VM_CASE'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(127,9): warning C4005: 'VM_NEXT': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(123,9):
+      see previous definition of 'VM_NEXT'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(128,9): warning C4005: 'VM_CONTINUE': macro redefinition
+      C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(124,9):
+      see previous definition of 'VM_CONTINUE'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmexecute.cpp(302,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lvmload.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmload.cpp(653,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  lvmutils.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\Luau\VM\src\lvmutils.cpp(639,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  bytecode.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\helpers\bytecode\bytecode.cpp(155,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  cache.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\cache.hpp(114,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  debug.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\debug.hpp(969,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  filesys.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\filesys.hpp(676,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  instance.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\instance.hpp(253,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  metatable.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\metatable.hpp(129,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
+  Compiling...
+  script.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\script.hpp(1186,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  includes.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\misc\includes\includes.hpp(30,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  luauhelper.hpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\roblox\offsets\helpers\luauhelper.hpp(42,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  server.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\srv\server.cpp(112,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  auth.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\auth.cpp(10,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  cookies.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\cookies.cpp(30,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  cprtypes.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\cprtypes.cpp(15,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  digest.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\digest.cpp(10,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  error.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\error.cpp(69,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  multipart.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\multipart.cpp(8,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  parameters.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\parameters.cpp(31,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  payload.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\payload.cpp(21,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  proxies.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\proxies.cpp(22,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  session.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\session.cpp(479,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  ssl_options.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\ssl_options.cpp(12,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  timeout.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\timeout.cpp(27,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  util.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\dependencies\cpr\src\util.cpp(81,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  loader.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\loader.cpp(47,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  pipe.cxx
+C:\Users\Admin\Desktop\module\Vicna\module\logging\pipe.cxx(2,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  env.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\env.cpp(439,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
+  Compiling...
+  yield.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\yield\yield.cpp(42,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  execution.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\execution\execution.cpp(106,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  scheduler.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\roblox\scheduler\scheduler.cpp(91,1): error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "pch.h"' to your source?
+  Generating Code...
