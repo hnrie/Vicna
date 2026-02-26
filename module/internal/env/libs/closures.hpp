@@ -774,7 +774,7 @@ void RegisterLibrary(lua_State *L) {
   Utils::AddFunction(L, "hookfunc", hookfunction);
   Utils::AddFunction(L, "replaceclosure", hookfunction);
   Utils::AddFunction(L, "restorefunction", restorefunction);
-  Utils::AddFunction(L, "checkcaller", checkcaller);
+//  Utils::AddFunction(L, "checkcaller", checkcaller);
   Utils::AddFunction(L, "isexecutorclosure", is_executor_closure);
   Utils::AddFunction(L, "isourclosure", is_executor_closure);
   Utils::AddFunction(L, "checkclosure", is_executor_closure);
