@@ -14,7 +14,6 @@
 #include <internal/env/libs/miscellaneous.hpp>
 #include <internal/env/libs/script.hpp>
 
-
 namespace Environment {
 std::vector<Closure *> function_array;
 }
@@ -199,28 +198,52 @@ void InitializeHooks(lua_State *L) {
   lua_settop(L, OriginalTop);
 }
 
+static void crash_log_e(const char *msg) {
+  FILE *f = nullptr;
+  fopen_s(&f, "C:\\Users\\Admin\\Desktop\\vicna_crash.log", "a");
+  if (f) {
+    fprintf(f, "%s\n", msg);
+    fflush(f);
+    fclose(f);
+  }
+}
+
 void Environment::SetupEnvironment(lua_State *L) {
+  crash_log_e("[env] start");
   luaL_sandboxthread(L);
 
+  crash_log_e("[env] Cache");
   Cache::RegisterLibrary(L);
+  crash_log_e("[env] Closures");
   Closures::RegisterLibrary(L);
+  crash_log_e("[env] Http");
   Http::RegisterLibrary(L);
+  crash_log_e("[env] Miscellaneous");
   Miscellaneous::RegisterLibrary(L);
+  crash_log_e("[env] Filesystem");
   Filesystem::RegisterLibrary(L);
+  crash_log_e("[env] Script");
   Script::RegisterLibrary(L);
+  crash_log_e("[env] Debug");
   Debug::RegisterLibrary(L);
+  crash_log_e("[env] Metatable");
   Metatable::RegisterLibrary(L);
+  crash_log_e("[env] Crypt");
   Crypt::RegisterLibrary(L);
+  crash_log_e("[env] Instance");
   Instance::RegisterLibrary(L);
+  crash_log_e("[env] Interactions");
   Interactions::RegisterLibrary(L);
+  crash_log_e("[env] System");
   System::RegisterLibrary(L);
+  crash_log_e("[env] Websocket");
   Websocket::register_library(L);
+  crash_log_e("[env] Drawing");
   DrawingLib::RegisterLibrary(L);
 
-  // todo: fix hookfunc (make pass on sunc), fix filtergc, fix checkcaller? fix
-  // getconnections ( returned false for a luaconnection[2] )
-
+  crash_log_e("[env] InitializeHooks");
   InitializeHooks(L);
+  crash_log_e("[env] sandbox");
   luaL_sandboxthread(L);
 
   lua_newtable(L);

@@ -594,7 +594,18 @@ void checkIsA(lua_State *L, int idx, const char *idk) {
   lua_call(L, 2, 1);
 }
 
-int firetouchinterest(lua_State *L) {
+static void crash_log_f(const char *msg) {
+  FILE *f = nullptr;
+  fopen_s(&f, "C:\\Users\\Admin\\Desktop\\vicna_crash.log", "a");
+  if (f) {
+    fprintf(f, "%s\n", msg);
+    fflush(f);
+    fclose(f);
+  }
+}
+
+int firetouchinterest_inner(lua_State *L) {
+  crash_log_f("[fti] start");
   luaL_checktype(L, 1, LUA_TUSERDATA);
   luaL_checktype(L, 2, LUA_TUSERDATA);
   luaL_argexpected(L, lua_isboolean(L, 3) || lua_isnumber(L, 3), 3,
@@ -617,27 +628,72 @@ int firetouchinterest(lua_State *L) {
   luaL_argexpected(L, bp_1, 1, "BasePart");
   luaL_argexpected(L, bp_2, 2, "BasePart");
 
-  const uintptr_t basePart1 = *static_cast<uintptr_t *>(lua_touserdata(L, 1));
-  const uintptr_t basePart2 = *static_cast<uintptr_t *>(lua_touserdata(L, 2));
+  crash_log_f("[fti] getting userdata");
+  void *ud1 = lua_touserdata(L, 1);
+  void *ud2 = lua_touserdata(L, 2);
+  if (!ud1 || !ud2) {
+    luaL_error(L, "firetouchinterest: userdata is null");
+    return 0;
+  }
 
-  const uintptr_t Primitive1 =
-      *reinterpret_cast<uintptr_t *>(basePart1 + Offsets::Instance::Primitive);
-  const uintptr_t Primitive2 =
-      *reinterpret_cast<uintptr_t *>(basePart2 + Offsets::Instance::Primitive);
+  crash_log_f("[fti] deref part ptrs");
+  const uintptr_t part1 = *reinterpret_cast<uintptr_t *>(ud1);
+  const uintptr_t part2 = *reinterpret_cast<uintptr_t *>(ud2);
 
-  const uintptr_t Overlap1 =
-      *reinterpret_cast<uintptr_t *>(Primitive1 + Offsets::Instance::Overlap);
-  const uintptr_t Overlap2 =
-      *reinterpret_cast<uintptr_t *>(Primitive2 + Offsets::Instance::Overlap);
+  if (!part1 || !part2) {
+    luaL_error(L, "firetouchinterest: instance pointer is null");
+    return 0;
+  }
 
-  if (!Primitive1 || !Primitive2 || !Overlap1 || !Overlap2)
-    luaL_error(L, ("lmk if this happens it shouldnt."));
+  char logbuf[128];
+  sprintf_s(logbuf, "[fti] part1=0x%llx part2=0x%llx",
+            (unsigned long long)part1, (unsigned long long)part2);
+  crash_log_f(logbuf);
 
-  const int toggle =
-      lua_isboolean(L, 3) ? (lua_toboolean(L, 3) ? 0 : 1) : lua_tointeger(L, 3);
-  const bool fire = toggle == 0;
+  crash_log_f("[fti] deref prim1");
+  const uintptr_t prim1 =
+      *reinterpret_cast<uintptr_t *>(part1 + Offsets::Instance::Primitive);
+  crash_log_f("[fti] deref prim2");
+  const uintptr_t prim2 =
+      *reinterpret_cast<uintptr_t *>(part2 + Offsets::Instance::Primitive);
 
-  Roblox::FireTouchInterest(Overlap2, Primitive1, Primitive2, fire, 1);
+  sprintf_s(logbuf, "[fti] prim1=0x%llx prim2=0x%llx",
+            (unsigned long long)prim1, (unsigned long long)prim2);
+  crash_log_f(logbuf);
+
+  if (!prim1 || !prim2) {
+    luaL_error(L, "firetouchinterest: Primitive is null");
+    return 0;
+  }
+
+  crash_log_f("[fti] deref overlap");
+  const uintptr_t overlap =
+      *reinterpret_cast<uintptr_t *>(prim2 + Offsets::Instance::Overlap);
+
+  sprintf_s(logbuf, "[fti] overlap=0x%llx", (unsigned long long)overlap);
+  crash_log_f(logbuf);
+
+  if (!overlap) {
+    luaL_error(L, "firetouchinterest: Overlap is null");
+    return 0;
+  }
+
+  const bool is_touched =
+      lua_isboolean(L, 3) ? lua_toboolean(L, 3) : (bool)lua_tointeger(L, 3);
+
+  crash_log_f("[fti] calling FireTouchInterest");
+  Roblox::FireTouchInterest(overlap, prim1, prim2, is_touched, true);
+  crash_log_f("[fti] done");
+  return 0;
+}
+
+int firetouchinterest(lua_State *L) {
+  __try {
+    return firetouchinterest_inner(L);
+  } __except (EXCEPTION_EXECUTE_HANDLER) {
+    MessageBoxA(NULL, "firetouchinterest crashed (access violation)",
+                "Vicna Error", MB_OK | MB_ICONERROR);
+  }
   return 0;
 }
 
@@ -792,14 +848,11 @@ int getconnections(lua_State *ls) {
     auto conn = reinterpret_cast<connectionenv::lua_objects::RBXConnection_t *>(
         lua_newuserdatatagged(
             ls, sizeof(connectionenv::lua_objects::RBXConnection_t), 72));
-    if (Node->storage && (Node->storage->vftable == funcScrSlotvft ||
-                          Node->storage->vftable == waitvft ||
-                          Node->storage->vftable == oncevft ||
-                          Node->storage->vftable == connectparalellvft)) {
-      *conn = connectionenv::lua_objects::RBXConnection_t(Node, true);
-    } else {
-      *conn = connectionenv::lua_objects::RBXConnection_t(Node, false);
-    }
+    // Treat connection as Lua if it has valid storage.
+    // We can't enumerate all engine vftables, so default to true
+    // for any connection type (Connect, Wait, Once, ConnectParallel).
+    bool isLuaConn = (Node->storage != nullptr);
+    *conn = connectionenv::lua_objects::RBXConnection_t(Node, isLuaConn);
 
     lua_newtable(ls);
     lua_pushcfunction(ls, mt_index, nullptr);
