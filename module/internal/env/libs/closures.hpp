@@ -577,14 +577,6 @@ static int MetamethodHookBridge(lua_State *L) {
   return lua_gettop(L);
 }
 
-int getnamecallmethod(lua_State *L) {
-  if (!L->namecall) {
-    lua_pushnil(L);
-    return 1;
-  }
-  lua_pushstring(L, getstr(L->namecall));
-  return 1;
-}
 
 int hookmetamethod(lua_State *L) {
   luaL_checktype(L, 2, LUA_TSTRING);
@@ -856,7 +848,6 @@ void RegisterLibrary(lua_State *L) {
   Utils::AddFunction(L, "hookfunc", hookfunction);
   Utils::AddFunction(L, "replaceclosure", hookfunction);
   Utils::AddFunction(L, "hookmetamethod", hookmetamethod);
-  Utils::AddFunction(L, "getnamecallmethod", getnamecallmethod);
   Utils::AddFunction(L, "restorefunction", restorefunction);
 //  Utils::AddFunction(L, "checkcaller", checkcaller);
   Utils::AddFunction(L, "isexecutorclosure", is_executor_closure);
