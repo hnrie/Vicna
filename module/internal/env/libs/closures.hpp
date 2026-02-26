@@ -545,9 +545,11 @@ int hookfunction(lua_State *L) {
 static int MetamethodHookBridge(lua_State *L) {
   Closure *self = clvalue(L->ci->func);
 
-  bool is_ours = (SharedVariables::ExploitThread && L == SharedVariables::ExploitThread);
-  if (!is_ours && L && L->userdata)
-    is_ours = L->userdata->Script.expired() || L->userdata->Capabilities == MaxCapabilities;
+  Table *exploitGt = SharedVariables::ExploitThread
+                         ? SharedVariables::ExploitThread->gt
+                         : nullptr;
+  bool is_ours = exploitGt && (L->gt == exploitGt ||
+                               L == SharedVariables::ExploitThread);
 
   TValue *target = is_ours ? &self->c.upvals[0] : &self->c.upvals[1];
 
@@ -573,6 +575,15 @@ static int MetamethodHookBridge(lua_State *L) {
   if (s == 0 && (L->status == LUA_YIELD || L->status == LUA_BREAK))
     return -1;
   return lua_gettop(L);
+}
+
+int getnamecallmethod(lua_State *L) {
+  if (!L->namecall) {
+    lua_pushnil(L);
+    return 1;
+  }
+  lua_pushstring(L, getstr(L->namecall));
+  return 1;
 }
 
 int hookmetamethod(lua_State *L) {
@@ -845,6 +856,7 @@ void RegisterLibrary(lua_State *L) {
   Utils::AddFunction(L, "hookfunc", hookfunction);
   Utils::AddFunction(L, "replaceclosure", hookfunction);
   Utils::AddFunction(L, "hookmetamethod", hookmetamethod);
+  Utils::AddFunction(L, "getnamecallmethod", getnamecallmethod);
   Utils::AddFunction(L, "restorefunction", restorefunction);
 //  Utils::AddFunction(L, "checkcaller", checkcaller);
   Utils::AddFunction(L, "isexecutorclosure", is_executor_closure);
