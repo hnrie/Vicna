@@ -36,6 +36,13 @@ jobs:
           Compress-Archive -Path $files.FullName -DestinationPath Vicna-${{ github.sha }}-x64.zip -Force
         shell: pwsh
 
+      - name: Upload zip to Actions artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Vicna-x64
+          path: Vicna-${{ github.sha }}-x64.zip
+
       - name: Upload build log
         if: always()
         uses: actions/upload-artifact@v4
