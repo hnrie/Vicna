@@ -1,0 +1,53 @@
+name: Release x64
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build Release x64
+        run: |
+          msbuild rewriting_module.sln `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:DebugInformationFormat=ProgramDatabase `
+            /p:DebugType=full `
+            /p:GenerateDebugInformation=true `
+            /verbosity:diagnostic `
+            /bl:build.binlog
+        shell: pwsh
+
+      - name: Zip artifacts
+        run: |
+          $out = "x64\Release"
+          $files = Get-ChildItem $out -Include *.dll,*.pdb,*.exe -Recurse
+          Compress-Archive -Path $files.FullName -DestinationPath Vicna-${{ github.ref_name }}-x64.zip -Force
+        shell: pwsh
+
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.binlog
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            Vicna-${{ github.ref_name }}-x64.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
