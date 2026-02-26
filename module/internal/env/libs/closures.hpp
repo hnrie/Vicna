@@ -398,9 +398,6 @@ int hookfunction(lua_State *L) {
   Closure *original = clvalue(index2addr(L, 1));
   Closure *hook = clvalue(index2addr(L, 2));
 
-  lua_ref(L, 1);
-  lua_ref(L, 2);
-
   const auto orig_t = ClosureUtils::identify_closure(original);
   const auto hook_t = ClosureUtils::identify_closure(hook);
 
@@ -424,13 +421,6 @@ int hookfunction(lua_State *L) {
     auto nccit = NewCClosureMap.find(original);
     if (nccit != NewCClosureMap.end())
       ncc_map_set(L, backup, nccit->second);
-
-    // Anchor backup on stack then ref it.
-    luaC_threadbarrier(L);
-    setclvalue(L, L->top, backup);
-    L->top++;
-    lua_ref(L, -1);
-    lua_pop(L, 1);
 
     hook_map_set(L, original, backup);
     crash_log("[hf] backup created");
@@ -460,7 +450,6 @@ int hookfunction(lua_State *L) {
     ClosureUtils::push_closure(L, src);
     lua_call(L, 1, 1);
     Closure *wrapped = clvalue(index2addr(L, -1));
-    lua_ref(L, -1);
     ClosureUtils::patch_lclosure(L, original, wrapped);
     restore_debug();
     lua_pop(L, 1);
@@ -513,7 +502,6 @@ int hookfunction(lua_State *L) {
         lua_pushvalue(L, 2);
         lua_call(L, 1, 1);
         eff = clvalue(index2addr(L, -1));
-        lua_ref(L, -1);
         lua_pop(L, 1);
       }
       ClosureUtils::patch_lclosure(L, original, eff);
@@ -552,6 +540,87 @@ int hookfunction(lua_State *L) {
 }
 
 // ---------------------------------------------------------------------------
+// hookmetamethod
+// ---------------------------------------------------------------------------
+static int MetamethodHookBridge(lua_State *L) {
+  Closure *self = clvalue(L->ci->func);
+
+  bool is_ours = (SharedVariables::ExploitThread && L == SharedVariables::ExploitThread);
+  if (!is_ours && L && L->userdata)
+    is_ours = L->userdata->Script.expired() || L->userdata->Capabilities == MaxCapabilities;
+
+  TValue *target = is_ours ? &self->c.upvals[0] : &self->c.upvals[1];
+
+  lua_rawcheckstack(L, 1);
+  luaC_threadbarrier(L);
+  *L->top++ = *target;
+  lua_insert(L, 1);
+
+  StkId fn = L->base;
+  L->baseCcalls++;
+  int s = luaD_pcall(
+      L, [](lua_State *L, void *ud) { luaD_call(L, (StkId)ud, LUA_MULTRET); },
+      fn, savestack(L, fn), 0);
+  L->baseCcalls--;
+
+  if (s == LUA_ERRRUN) {
+    std::string e = lua_tostring(L, -1);
+    lua_pop(L, 1);
+    luaL_error(L, "%s", e.c_str());
+    return 0;
+  }
+  expandstacklimit(L, L->top);
+  if (s == 0 && (L->status == LUA_YIELD || L->status == LUA_BREAK))
+    return -1;
+  return lua_gettop(L);
+}
+
+int hookmetamethod(lua_State *L) {
+  luaL_checktype(L, 2, LUA_TSTRING);
+  luaL_checktype(L, 3, LUA_TFUNCTION);
+
+  if (!lua_getmetatable(L, 1))
+    luaL_error(L, "hookmetamethod: object has no metatable");
+
+  int mt = lua_gettop(L);
+  const char *mm = lua_tostring(L, 2);
+
+  lua_getfield(L, mt, mm);
+  if (!lua_isfunction(L, -1)) {
+    lua_pop(L, 2);
+    luaL_error(L, "hookmetamethod: '%s' is not a function", mm);
+  }
+
+  luaC_threadbarrier(L);
+  Closure *cur = clvalue(index2addr(L, -1));
+  Closure *orig_clone = cur->isC ? ClosureUtils::clone_cclosure_raw(L, cur)
+                                 : ClosureUtils::clone_lclosure_raw(L, cur);
+  if (!orig_clone) {
+    lua_pop(L, 2);
+    luaL_error(L, "hookmetamethod: clone failed");
+  }
+  anchor_closure(L, orig_clone);
+
+  lua_pushvalue(L, 3);
+  ClosureUtils::push_closure(L, orig_clone);
+  lua_pushcclosurek(L, MetamethodHookBridge, mm, 2, nullptr);
+
+  Closure *bridge = clvalue(index2addr(L, -1));
+  anchor_closure(L, bridge);
+  WrappedClosures.insert(bridge);
+
+  lua_setreadonly(L, mt, false);
+  lua_pushvalue(L, -1);
+  lua_setfield(L, mt, mm);
+  lua_setreadonly(L, mt, true);
+
+  lua_pop(L, 4);
+
+  ClosureUtils::push_closure(L, orig_clone);
+  return 1;
+}
+
+// ---------------------------------------------------------------------------
 // restorefunction
 // ---------------------------------------------------------------------------
 int restorefunction(lua_State *L) {
@@ -566,6 +635,8 @@ int restorefunction(lua_State *L) {
 
   Closure *saved = it->second;
   HookedFunctions.erase(it);
+  unanchor_closure(L, original);
+  unanchor_closure(L, saved);
 
   const auto orig_t = ClosureUtils::identify_closure(original);
   const auto save_t = ClosureUtils::identify_closure(saved);
@@ -773,6 +844,7 @@ void RegisterLibrary(lua_State *L) {
   Utils::AddFunction(L, "hookfunction", hookfunction);
   Utils::AddFunction(L, "hookfunc", hookfunction);
   Utils::AddFunction(L, "replaceclosure", hookfunction);
+  Utils::AddFunction(L, "hookmetamethod", hookmetamethod);
   Utils::AddFunction(L, "restorefunction", restorefunction);
 //  Utils::AddFunction(L, "checkcaller", checkcaller);
   Utils::AddFunction(L, "isexecutorclosure", is_executor_closure);
