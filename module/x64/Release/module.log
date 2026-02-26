@@ -1,7 +1,97 @@
-﻿  luauhelper.hpp
+﻿  blake3.c
+  blake3_dispatch.c
+  blake3_portable.c
+  lz4.c
+  base64.cpp
+  Allocator.cpp
+  Ast.cpp
+  Confusables.cpp
+  Cst.cpp
+  Lexer.cpp
+  Location.cpp
+  Parser.cpp
+  PrettyPrinter.cpp
+  StringUtils.cpp
+  TimeTrace.cpp
+  BuiltinFolding.cpp
+  Builtins.cpp
+  BytecodeBuilder.cpp
+  Compiler.cpp
+  ConstantFolding.cpp
+  CostModel.cpp
+  lcode.cpp
+  TableShape.cpp
+  Types.cpp
+  ValueTracking.cpp
+  lapi.cpp
+  laux.cpp
+  lbaselib.cpp
+  lbitlib.cpp
+  lbuffer.cpp
+  lbuflib.cpp
+  lbuiltins.cpp
+  lcorolib.cpp
+  ldblib.cpp
+  ldebug.cpp
+  ldo.cpp
+  lfunc.cpp
+  lgc.cpp
+  lgcdebug.cpp
+  linit.cpp
+  lmathlib.cpp
+  lmem.cpp
+  lnumprint.cpp
+  lobject.cpp
+  loslib.cpp
+  lperf.cpp
+  lstate.cpp
+  lstring.cpp
+  lstrlib.cpp
+  ltable.cpp
+  ltablib.cpp
+  ltm.cpp
+  ludata.cpp
+  lutf8lib.cpp
+  lveclib.cpp
+  lvmexecute.cpp
+  lvmload.cpp
+  lvmutils.cpp
+  bytecode.cpp
+  cache.hpp
+  debug.hpp
+  filesys.hpp
+  instance.hpp
+  metatable.hpp
+  script.hpp
+  includes.hpp
+  luauhelper.hpp
+  server.cpp
+  auth.cpp
+  cookies.cpp
+  cprtypes.cpp
+  digest.cpp
+  error.cpp
+  multipart.cpp
+  parameters.cpp
+  payload.cpp
+  proxies.cpp
+  session.cpp
+  ssl_options.cpp
+  timeout.cpp
+  util.cpp
+  loader.cpp
+  pipe.cxx
   env.cpp
-  Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 12124 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  module.vcxproj -> C:\Users\Admin\Desktop\module\Vicna\x64\Release\Ronix-Module.dll
+  yield.cpp
+  execution.cpp
+  scheduler.cpp
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\closures.hpp(487,24): error C2039: 'next': is not a member of 'lua_State'
+  (compiling source file 'internal/env/env.cpp')
+      C:\Users\Admin\Desktop\module\Vicna\module\Dependencies\Luau\VM\src\lstate.h(247,8):
+      see declaration of 'lua_State'
+  
+C:\Users\Admin\Desktop\module\Vicna\module\internal\env\libs\closures.hpp(487,52): error C2039: 'next': is not a member of 'lua_State'
+  (compiling source file 'internal/env/env.cpp')
+      C:\Users\Admin\Desktop\module\Vicna\module\Dependencies\Luau\VM\src\lstate.h(247,8):
+      see declaration of 'lua_State'
+  
