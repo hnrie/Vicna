@@ -1035,7 +1035,7 @@ inline void RegisterLibrary(lua_State *L) {
 
   Utils::AddFunction(L, "fireproximityprompt", fireproximityprompt);
   Utils::AddFunction(L, "fireclickdetector", fireclickdetector);
-  Utils::AddFunction(L, "firetouchinterest", firetouchinterest);
+ // Utils::AddFunction(L, "firetouchinterest", firetouchinterest);
 
   Utils::AddFunction(L, "getconnections", getconnections);
 
