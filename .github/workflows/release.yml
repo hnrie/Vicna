@@ -2,8 +2,8 @@ name: Release x64
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 jobs:
   build:
@@ -33,7 +33,7 @@ jobs:
         run: |
           $out = "x64\Release"
           $files = Get-ChildItem $out -Include *.dll,*.pdb,*.exe -Recurse
-          Compress-Archive -Path $files.FullName -DestinationPath Vicna-${{ github.ref_name }}-x64.zip -Force
+          Compress-Archive -Path $files.FullName -DestinationPath Vicna-${{ github.sha }}-x64.zip -Force
         shell: pwsh
 
       - name: Upload build log
@@ -46,8 +46,9 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            Vicna-${{ github.ref_name }}-x64.zip
+          tag_name: build-${{ github.sha }}
+          name: Build ${{ github.sha }}
+          files: Vicna-${{ github.sha }}-x64.zip
           generate_release_notes: true
           draft: false
-          prerelease: false
+          prerelease: true
